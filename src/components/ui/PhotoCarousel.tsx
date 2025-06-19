@@ -40,17 +40,17 @@ const PhotoCarousel: React.FC = () => {
   }, [photos.length]);
 
   return (
-    <div className="relative h-96 overflow-hidden bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900">
+    <div className="relative h-96 overflow-hidden bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-400/20 via-purple-400/20 to-blue-400/20"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),transparent_50%)]"></div>
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-200/30 to-rose-200/30"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(244,114,182,0.2),transparent_50%)]"></div>
       </div>
 
       {/* Photo Cards Container */}
       <div className="relative h-full flex items-center justify-center perspective-1000">
-        <div className="relative w-full max-w-6xl mx-auto px-8">
-          <div className="flex items-center justify-center space-x-8">
+        <div className="relative w-full max-w-7xl mx-auto px-28">
+          <div className="flex items-center justify-center space-x-14">
             {photos.map((photo, index) => {
               const offset = index - currentIndex;
               const isActive = offset === 0;
@@ -73,20 +73,20 @@ const PhotoCarousel: React.FC = () => {
                     transformStyle: 'preserve-3d',
                   }}
                 >
-                  <div className="relative w-80 h-56 rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm border border-white/20">
+                  <div className="relative w-96 h-80 rounded-2xl overflow-hidden shadow-2xl bg-white/70 backdrop-blur-sm border border-pink-200/50">
                     <img
                       src={photo.url}
                       alt={photo.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-pink-900/60 via-transparent to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-xl font-bold mb-2">{photo.title}</h3>
-                      <p className="text-sm opacity-90">{photo.description}</p>
+                      <h3 className="text-xl font-bold mb-2 drop-shadow-lg">{photo.title}</h3>
+                      <p className="text-sm opacity-90 drop-shadow-md">{photo.description}</p>
                     </div>
                     
                     {/* 3D Border Effect */}
-                    <div className="absolute inset-0 rounded-2xl border-2 border-white/30 pointer-events-none"></div>
+                    <div className="absolute inset-0 rounded-2xl border-2 border-pink-300/40 pointer-events-none"></div>
                   </div>
                 </div>
               );
@@ -96,10 +96,10 @@ const PhotoCarousel: React.FC = () => {
       </div>
 
       {/* Floating Elements */}
-      <div className="absolute top-10 left-10 w-4 h-4 bg-pink-400/50 rounded-full animate-bounce animation-delay-1000"></div>
-      <div className="absolute top-20 right-20 w-6 h-6 bg-blue-400/50 rounded-full animate-bounce animation-delay-2000"></div>
-      <div className="absolute bottom-20 left-20 w-3 h-3 bg-purple-400/50 rounded-full animate-bounce animation-delay-1500"></div>
-      <div className="absolute bottom-10 right-10 w-5 h-5 bg-indigo-400/50 rounded-full animate-bounce animation-delay-500"></div>
+      <div className="absolute top-10 left-10 w-4 h-4 bg-pink-400/60 rounded-full animate-bounce animation-delay-1000"></div>
+      <div className="absolute top-20 right-20 w-6 h-6 bg-rose-400/60 rounded-full animate-bounce animation-delay-2000"></div>
+      <div className="absolute bottom-20 left-20 w-3 h-3 bg-pink-500/60 rounded-full animate-bounce animation-delay-1500"></div>
+      <div className="absolute bottom-10 right-10 w-5 h-5 bg-rose-500/60 rounded-full animate-bounce animation-delay-500"></div>
 
       {/* Progress Indicators */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -109,8 +109,8 @@ const PhotoCarousel: React.FC = () => {
             onClick={() => setCurrentIndex(index)}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex 
-                ? 'bg-white scale-125' 
-                : 'bg-white/50 hover:bg-white/75'
+                ? 'bg-pink-600 scale-125 shadow-lg' 
+                : 'bg-pink-400/70 hover:bg-pink-500/80'
             }`}
           />
         ))}
