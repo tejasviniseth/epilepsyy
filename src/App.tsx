@@ -12,6 +12,13 @@ import ProgressReports from './components/ProgressReports';
 
 export type ActivePage = 'home' | 'seizure-tracker' | 'medication-reminders' | 'emergency-sos' | 
   'mood-trigger-diary' | 'caregiver-dashboard' | 'daily-streaks' | 'mental-health-tools' | 'progress-reports';
+useEffect(() => {
+  if ('Notification' in window) {
+    Notification.requestPermission().then((permission) => {
+      console.log('Notification permission:', permission);
+    });
+  }
+}, []);
 
 const App: React.FC = () => {
   const [activePage, setActivePage] = useState<ActivePage>('home');
