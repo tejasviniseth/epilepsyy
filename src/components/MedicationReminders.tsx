@@ -16,7 +16,6 @@ interface Medication {
 }
 
 
-const PUBLIC_VAPID_KEY = "BPIPAW6v_abk2nybFeCc2xoxMZY_18mHTe71bpFvRus-wbE95zDIfRu7OAUkBjt5sdD-KaHpwvfmsp7E4Jcq_18";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -32,20 +31,22 @@ function showLocalNotification(title: string, body: string) {
   if (Notification.permission === "granted") {
     new Notification(title, {
       body,
-      icon: "/icon.png", // Optional
+      icon: "/icon.png", // optional icon
     });
+  } else {
+    console.warn("Notifications are not allowed by the user.");
   }
 }
 
 
-const scheduleMedicationReminder = (name: string, dosage: string, time: string) => {
+export const scheduleMedicationReminder = (name: string, dosage: string, time: string) => {
   const now = new Date();
   const [hours, minutes] = time.split(":").map(Number);
   const reminderTime = new Date();
   reminderTime.setHours(hours, minutes, 0, 0);
 
   if (reminderTime <= now) {
-    reminderTime.setDate(reminderTime.getDate() + 1); // Schedule for tomorrow if time has passed
+    reminderTime.setDate(reminderTime.getDate() + 1); // Schedule for tomorrow if time passed
   }
 
   const delay = reminderTime.getTime() - now.getTime();
