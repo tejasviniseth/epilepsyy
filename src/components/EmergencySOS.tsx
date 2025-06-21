@@ -56,6 +56,9 @@ const EmergencySOS: React.FC = () => {
     phone: '',
     email: ''
   });
+  const handleDelete = (id: string) => {
+  setContacts((prev) => prev.filter(contact => contact.id !== id));
+};
 
   const activateSOS = () => {
     setSosActive(true);
@@ -76,7 +79,27 @@ const EmergencySOS: React.FC = () => {
     setNewContact({ name: '', relationship: '', phone: '', email: '' });
     setShowAddContact(false);
   };
-
+  const handleSOS = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/trigger-sos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data.message);
+      alert(data.message);
+    } catch (error) {
+      console.error('Error sending SOS:', error);
+      alert(`Failed to send SOS alert: ${(error as Error)?.message || 'Unknown error occurred'}`);
+    }
+  };
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -97,7 +120,7 @@ const EmergencySOS: React.FC = () => {
           <p className="text-gray-600 mb-8">Press and hold the button below to send an emergency alert to your contacts with your current location.</p>
           
           <button
-            onClick={activateSOS}
+            onClick={handleSOS}
             disabled={sosActive}
             className={`w-32 h-32 rounded-full text-white font-bold text-xl shadow-2xl transition-all duration-300 transform ${
               sosActive 

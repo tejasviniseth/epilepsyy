@@ -34,7 +34,7 @@ interface JournalEntry {
 }
 
 const MentalHealthTools: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'meditation' | 'journal' | 'music'>('meditation');
+  const [activeTab, setActiveTab] = useState<'meditation' | 'journal' | 'music'>('music');
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSession, setCurrentSession] = useState<string | null>(null);
   const [showJournalForm, setShowJournalForm] = useState(false);
@@ -193,9 +193,9 @@ const MentalHealthTools: React.FC = () => {
       <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-2 border border-pink-200/50">
         <div className="flex space-x-2">
           {[
+            { id: 'music', label: 'Music Therapy', icon: <Music className="w-4 h-4" /> },
             { id: 'meditation', label: 'Meditation', icon: <Brain className="w-4 h-4" /> },
             { id: 'journal', label: 'Journal', icon: <PenTool className="w-4 h-4" /> },
-            { id: 'music', label: 'Music Therapy', icon: <Music className="w-4 h-4" /> }
           ].map((tab) => (
             <button
               key={tab.id}
