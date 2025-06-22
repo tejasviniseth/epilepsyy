@@ -28,32 +28,7 @@ interface DiaryEntry {
 
 const MoodTriggerDiary: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
-  const [entries] = useState<DiaryEntry[]>([
-    {
-      id: '1',
-      date: '2024-01-15',
-      mood: 8,
-      energy: 7,
-      stress: 3,
-      sleep: 8,
-      triggers: ['Work stress', 'Lack of sleep'],
-      activities: ['Exercise', 'Reading'],
-      notes: 'Had a good day overall, felt energetic after morning workout',
-      weather: 'sunny'
-    },
-    {
-      id: '2',
-      date: '2024-01-14',
-      mood: 6,
-      energy: 5,
-      stress: 6,
-      sleep: 6,
-      triggers: ['Bright lights', 'Loud noise'],
-      activities: ['Work', 'TV'],
-      notes: 'Felt a bit overwhelmed at work, headache in the evening',
-      weather: 'cloudy'
-    }
-  ]);
+  const [entries, setEntries] = useState<DiaryEntry[]>([]);
 
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -90,31 +65,31 @@ const MoodTriggerDiary: React.FC = () => {
   e.preventDefault();
 
   try {
-      const res = await fetch("http://localhost:5000/api/diary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const res = await fetch("http://localhost:5000/api/diary", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to save entry");
-      }
-
-      const data = await res.json();
-      console.log("Entry Saved:", data);
-
-      // Optional: Show popup
-      alert("Diary entry saved!");
-
-      // Reset form or close modal
-      setShowForm(false);
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Failed to save entry");
+    if (!res.ok) {
+      throw new Error("Failed to save entry");
     }
-  };
+
+    const data = await res.json();
+    console.log("Entry Saved:", data);
+
+    // 👇 Add to recent entries
+    setEntries((prev) => [...prev, { id: Date.now().toString(), ...formData }]);
+
+    alert("Diary entry saved!");
+    setShowForm(false);
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Failed to save entry");
+  }
+};
 
   const handleArrayToggle = (array: string[], item: string, field: 'triggers' | 'activities') => {
     const newArray = array.includes(item)
