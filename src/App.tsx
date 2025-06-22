@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+
+import React, { useState, useEffect  } from 'react';
+
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import SeizureTracker from './components/SeizureTracker';
