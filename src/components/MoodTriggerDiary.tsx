@@ -86,10 +86,34 @@ const MoodTriggerDiary: React.FC = () => {
     rainy: <CloudRain className="w-5 h-5 text-blue-500" />
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Diary entry:', formData);
-    setShowForm(false);
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+      const res = await fetch("http://localhost:5000/api/diary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to save entry");
+      }
+
+      const data = await res.json();
+      console.log("Entry Saved:", data);
+
+      // Optional: Show popup
+      alert("Diary entry saved!");
+
+      // Reset form or close modal
+      setShowForm(false);
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Failed to save entry");
+    }
   };
 
   const handleArrayToggle = (array: string[], item: string, field: 'triggers' | 'activities') => {
