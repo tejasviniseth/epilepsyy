@@ -14,11 +14,13 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/", async (_req: Request, res: Response) => {
+router.get("/", async (_req, res) => {
   try {
-    const entries = await DiaryEntry.find().sort({ date: -1 });
+    const entries = await DiaryEntry.find()
+      .sort({ createdAt: -1 })
+      .limit(2);
     res.json(entries);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: "Failed to fetch entries" });
   }
 });

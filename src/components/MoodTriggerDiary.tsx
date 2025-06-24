@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { 
   BookOpen, 
   Plus, 
@@ -14,21 +15,36 @@ import {
 } from 'lucide-react';
 
 interface DiaryEntry {
-  id: string;
+  _id: string;
   date: string;
   mood: number;
   energy: number;
   stress: number;
   sleep: number;
+  weather: string;
+  notes: string;
   triggers: string[];
   activities: string[];
-  notes: string;
-  weather: string;
 }
 
 const MoodTriggerDiary: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
+
+  const fetchEntries = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/diary");
+      const data: DiaryEntry[] = await res.json();
+      setEntries(data); // 🧠 directly set from DB
+    } catch (error) {
+      console.error("Failed to fetch entries:", error);
+    }
+  };
+
+  useEffect(() => {
+  fetchEntries();
+}, []);
+
 
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -79,9 +95,7 @@ const MoodTriggerDiary: React.FC = () => {
 
     const data = await res.json();
     console.log("Entry Saved:", data);
-
-    // 👇 Add to recent entries
-    setEntries((prev) => [...prev, { id: Date.now().toString(), ...formData }]);
+    setEntries((prev) => [data, ...prev.slice(0, 1)]); // latest 2 entries only
 
     alert("Diary entry saved!");
     setShowForm(false);
@@ -99,7 +113,10 @@ const MoodTriggerDiary: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: newArray }));
   };
 
-  const averageMood = entries.reduce((sum, entry) => sum + entry.mood, 0) / entries.length;
+const averageMood =
+  entries.length > 0
+    ? entries.reduce((sum, entry) => sum + entry.mood, 0) / entries.length
+    : 0;
 
   return (
     <div className="space-y-8">
@@ -174,7 +191,7 @@ const MoodTriggerDiary: React.FC = () => {
         <h2 className="text-xl font-semibold text-gray-800 mb-6">Recent Entries</h2>
         <div className="space-y-4">
           {entries.map((entry) => (
-            <div key={entry.id} className="bg-white/50 rounded-xl p-4 hover:bg-white/70 transition-colors">
+            <div key={entry._id} className="bg-white/50 rounded-xl p-4 hover:bg-white/70 transition-colors">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="text-2xl">{moodEmojis[entry.mood - 1]}</div>

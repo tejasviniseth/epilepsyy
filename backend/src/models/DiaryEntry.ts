@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-export interface IDiaryEntry extends mongoose.Document {
+export interface DiaryEntry extends mongoose.Document {
+  _id: string;
   date: string;
   mood: number;
   energy: number;
@@ -10,18 +11,33 @@ export interface IDiaryEntry extends mongoose.Document {
   triggers: string[];
   activities: string[];
   notes: string;
+  hasRecording: boolean;
+  recordingUrl?: string;
+  recordingDuration?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const diarySchema = new mongoose.Schema<IDiaryEntry>({
-  date: { type: String, required: true },
-  mood: Number,
-  energy: Number,
-  stress: Number,
-  sleep: Number,
-  weather: String,
-  triggers: [String],
-  activities: [String],
-  notes: String,
-});
+const diarySchema = new mongoose.Schema<DiaryEntry>(
+  {
+    date: { type: String, required: true },
+    mood: Number,
+    energy: Number,
+    stress: Number,
+    sleep: Number,
+    weather: String,
+    triggers: [String],
+    activities: [String],
+    notes: String,
 
-export default mongoose.model<IDiaryEntry>("DiaryEntry", diarySchema);
+    // 🎤 Voice-specific fields
+    hasRecording: { type: Boolean, default: false },
+    recordingUrl: String,
+    recordingDuration: String,
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model<DiaryEntry>("DiaryEntry", diarySchema);
