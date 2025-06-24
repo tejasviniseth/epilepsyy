@@ -33,7 +33,7 @@ const MoodTriggerDiary: React.FC = () => {
 
   const fetchEntries = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/diary");
+      const res = await fetch("https://epicaredb.onrender.com/api/diary");
       const data: DiaryEntry[] = await res.json();
       setEntries(data); // 🧠 directly set from DB
     } catch (error) {
@@ -81,7 +81,7 @@ const MoodTriggerDiary: React.FC = () => {
   e.preventDefault();
 
   try {
-    const res = await fetch("http://localhost:5000/api/diary", {
+    const res = await fetch("https://epicaredb.onrender.com/api/diary", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,6 +94,7 @@ const MoodTriggerDiary: React.FC = () => {
     }
 
     const data = await res.json();
+    
     console.log("Entry Saved:", data);
     setEntries((prev) => [data, ...prev.slice(0, 1)]); // latest 2 entries only
 

@@ -16,12 +16,11 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/", async (_req, res) => {
   try {
-    const entries = await DiaryEntry.find()
-      .sort({ createdAt: -1 })
-      .limit(2);
-    res.json(entries);
+    const entries = await DiaryEntry.find().sort({ createdAt: -1 }).limit(2);
+    res.json(entries);  // ✅ this must be an array
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch entries" });
+    console.error("Fetch failed:", err);  // log the real reason
+    res.status(500).json({ error: "Failed to fetch diary entries" });
   }
 });
 
